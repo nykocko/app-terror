@@ -189,7 +189,7 @@
         if (!headers) return; // Si no hay token, la función ya redirigió
 
         try {
-            const response = await fetch('http://localhost:5000/api/admin/historias-pendientes', {
+            const response = await fetch('https://terror-nocturno.onrender.com/api/admin/historias-pendientes', {
                 headers: headers // <--- AÑADE LOS HEADERS A LA SOLICITUD
             });
             if (!response.ok) {
@@ -246,7 +246,7 @@
                             if (!headers) return;
 
                             try {
-                                const response = await fetch(`http://localhost:5000/api/admin/historias/${storyId}/aprobar`, {
+                                const response = await fetch(`https://terror-nocturno.onrender.com/api/admin/historias/${storyId}/aprobar`, {
                                     method: 'PUT',
                                     headers: headers // <--- AÑADE LOS HEADERS
                                 });
@@ -280,7 +280,7 @@
                             if (!headers) return;
 
                             try {
-                                const response = await fetch(`http://localhost:5000/api/admin/historias/${storyId}`, {
+                                const response = await fetch(`https://terror-nocturno.onrender.com/api/admin/historias/${storyId}`, {
                                     method: 'DELETE',
                                     headers: headers // <--- AÑADE LOS HEADERS
                                 });
@@ -361,7 +361,7 @@
         if (!headers) return;
 
         try {
-            const response = await fetch(`http://localhost:5000/api/admin/historias/${storyId}`, {
+            const response = await fetch(`https://terror-nocturno.onrender.com/api/admin/historias/${storyId}`, {
                 method: 'PUT',
                 headers: headers, // <--- AÑADE LOS HEADERS
                 body: JSON.stringify(updatedData)

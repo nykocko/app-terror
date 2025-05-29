@@ -166,7 +166,7 @@
         async function cargarUltimasHistorias() {
             const historiasContainer = document.getElementById('historias-container');
             try {
-                const response = await fetch('http://localhost:5000/api/historias/ultimas'); // Nueva ruta
+                const response = await fetch('https://terror-nocturno.onrender.com/api/historias/ultimas'); // Nueva ruta
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }

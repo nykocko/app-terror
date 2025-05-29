@@ -271,7 +271,7 @@
         const selectedCategory = categoryFilter.value;
         const selectedSortOrder = sortOrder.value;
 
-        let url = `http://localhost:5000/api/historias?page=${currentPage}&limit=${storiesPerPage}`;
+        let url = `https://terror-nocturno.onrender.com/api/historias?page=${currentPage}&limit=${storiesPerPage}`;
         if (searchTerm) {
             url += `&search=${encodeURIComponent(searchTerm)}`;
         }
