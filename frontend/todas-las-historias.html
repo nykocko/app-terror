@@ -1,269 +1,380 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Todas las Historias - Terror Nocturno</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Creepster&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-        }
-        .font-creepy {
-            font-family: 'Creepster', cursive;
-        }
-        /* Estilo para el enlace activo */
-        .nav-active {
-            color: #CC0000; /* Rojo principal de los títulos */
-            font-weight: bold;
-            cursor: default; /* Indica que no es clicable */
-            pointer-events: none; /* Deshabilita clics en el enlace */
-        }
-        /* Estilos específicos para el menú móvil */
-        .mobile-nav-menu {
-            /* Por defecto, está oculto con altura 0 y opacidad 0 */
-            max-height: 0; /* Lo colapsa */
-            opacity: 0;   /* Lo hace invisible */
-            overflow: hidden; /* Oculta el contenido que se desborda */
-            flex-direction: column;
-            width: 100%;
-            background-color: #1a202c;
-            padding: 0 1rem; /* Padding vertical 0 para que la altura inicial sea 0 */
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            z-index: 20;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            
-            /* --- CAMBIO CRUCIAL: La transición se aplica a estas propiedades --- */
-            transition: max-height 0.7s ease-in-out, opacity 0.7s ease-in-out, padding 0.7s ease-in-out; 
-            /* Agregamos padding a la transición para un efecto más suave al abrir/cerrar */
-        }
+      body {
+        font-family: "Arial", sans-serif;
+      }
+      .font-creepy {
+        font-family: "Creepster", cursive;
+      }
+      /* Estilo para el enlace activo */
+      .nav-active {
+        color: #cc0000; /* Rojo principal de los títulos */
+        font-weight: bold;
+        cursor: default; /* Indica que no es clicable */
+        pointer-events: none; /* Deshabilita clics en el enlace */
+      }
+      /* Estilos específicos para el menú móvil */
+      .mobile-nav-menu {
+        /* Por defecto, está oculto con altura 0 y opacidad 0 */
+        max-height: 0; /* Lo colapsa */
+        opacity: 0; /* Lo hace invisible */
+        overflow: hidden; /* Oculta el contenido que se desborda */
+        flex-direction: column;
+        width: 100%;
+        background-color: #1a202c;
+        padding: 0 1rem; /* Padding vertical 0 para que la altura inicial sea 0 */
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 20;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
-        .mobile-nav-menu.active {
-            /* Cuando está activo, se expande y se hace visible */
-            max-height: 500px; /* Un valor lo suficientemente grande para contener todo el menú */
-            opacity: 1;
-            padding: 1rem; /* Restauramos el padding vertical cuando está activo */
-            /* No necesitamos display: flex aquí, ya que el display: none no se usa para ocultarlo inicialmente */
-            /* El flex-direction: column ya está definido en mobile-nav-menu */
-            display: flex; /* Añadido para asegurar que flexbox se active cuando es visible */
-        }
-        
-        .mobile-nav-menu li {
-            margin-bottom: 0.5rem;
-        }
-        .mobile-nav-menu a {
-            display: block;
-            padding: 0.5rem 0;
-            text-align: center;
-        }
-        /* Estilos para el Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8); /* Fondo oscuro semitransparente */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000; /* Asegura que esté por encima de todo */
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-        }
+        /* --- CAMBIO CRUCIAL: La transición se aplica a estas propiedades --- */
+        transition: max-height 0.7s ease-in-out, opacity 0.7s ease-in-out,
+          padding 0.7s ease-in-out;
+        /* Agregamos padding a la transición para un efecto más suave al abrir/cerrar */
+      }
 
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
+      .mobile-nav-menu.active {
+        /* Cuando está activo, se expande y se hace visible */
+        max-height: 500px; /* Un valor lo suficientemente grande para contener todo el menú */
+        opacity: 1;
+        padding: 1rem; /* Restauramos el padding vertical cuando está activo */
+        /* No necesitamos display: flex aquí, ya que el display: none no se usa para ocultarlo inicialmente */
+        /* El flex-direction: column ya está definido en mobile-nav-menu */
+        display: flex; /* Añadido para asegurar que flexbox se active cuando es visible */
+      }
 
-        .modal-content {
-            background: #1a202c; /* Color de fondo similar a tu header/cards */
-            padding: 30px;
-            border-radius: 8px;
-            max-width: 800px; /* Ancho máximo del modal */
-            width: 90%; /* Ancho responsivo */
-            max-height: 90vh; /* Altura máxima para evitar desbordamiento */
-            overflow-y: auto; /* Scroll si el contenido es muy largo */
-            position: relative;
-            border: 2px solid #cc0000; /* Borde rojo */
-            box-shadow: 0 0 20px rgba(204, 0, 0, 0.4); /* Sombra roja */
-        }
+      .mobile-nav-menu li {
+        margin-bottom: 0.5rem;
+      }
+      .mobile-nav-menu a {
+        display: block;
+        padding: 0.5rem 0;
+        text-align: center;
+      }
+      /* Estilos para el Modal */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8); /* Fondo oscuro semitransparente */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000; /* Asegura que esté por encima de todo */
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+      }
 
-        .modal-close-btn {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            background: none;
-            border: none;
-            font-size: 2rem;
-            color: #cc0000; /* Color rojo para la X */
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
+      .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+      }
 
-        .modal-close-btn:hover {
-            color: #ff0000;
-        }
-        /* Se requiere el plugin @tailwindcss/line-clamp para usar estas clases */
-        .line-clamp-4 {
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 4;
-            /* Asegura que las palabras muy largas se rompan */
-            word-break: break-all; 
-        }
+      .modal-content {
+        background: #1a202c; /* Color de fondo similar a tu header/cards */
+        padding: 30px;
+        border-radius: 8px;
+        max-width: 800px; /* Ancho máximo del modal */
+        width: 90%; /* Ancho responsivo */
+        max-height: 90vh; /* Altura máxima para evitar desbordamiento */
+        overflow-y: auto; /* Scroll si el contenido es muy largo */
+        position: relative;
+        border: 2px solid #cc0000; /* Borde rojo */
+        box-shadow: 0 0 20px rgba(204, 0, 0, 0.4); /* Sombra roja */
+      }
+
+      .modal-close-btn {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        background: none;
+        border: none;
+        font-size: 2rem;
+        color: #cc0000; /* Color rojo para la X */
+        cursor: pointer;
+        transition: color 0.2s ease;
+      }
+
+      .modal-close-btn:hover {
+        color: #ff0000;
+      }
+      /* Se requiere el plugin @tailwindcss/line-clamp para usar estas clases */
+      .line-clamp-4 {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+        /* Asegura que las palabras muy largas se rompan */
+        word-break: break-all;
+      }
     </style>
-</head>
-<body class="bg-black text-gray-300">
-
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7558152489264604"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body class="bg-black text-gray-300">
     <header class="bg-gray-900 text-red-600 p-4 shadow-lg relative z-20">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-4xl font-creepy">Terror Nocturno</h1>
+      <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-4xl font-creepy">Terror Nocturno</h1>
 
-            <button id="hamburgerBtn" class="text-red-600 focus:outline-none md:hidden">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
+        <button
+          id="hamburgerBtn"
+          class="text-red-600 focus:outline-none md:hidden"
+        >
+          <svg
+            class="w-8 h-8"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            ></path>
+          </svg>
+        </button>
 
-            <nav class="hidden md:flex space-x-6">
-                <ul class="flex space-x-6">
-                    <li><a href="index.html" class="hover:text-red-400 text-lg">Inicio</a></li>
-                    <li><a href="todas-las-historias.html" class="hover:text-red-400 text-lg nav-active">Historias</a></li>
-                    <li><a href="envia-tu-historia.html" class="hover:text-red-400 text-lg">Envía Tu Pesadilla</a></li>
-                    <li><a href="contacto.html" class="hover:text-red-400 text-lg">Contacto</a></li>
-                </ul>
-            </nav>
-        </div>
-
-        <nav id="mobileMenu" class="mobile-nav-menu md:hidden">
-            <ul>
-                <li><a href="index.html" class="hover:text-red-400 text-lg">Inicio</a></li>
-                <li><a href="todas-las-historias.html" class="hover:text-red-400 text-lg nav-active">Historias</a></li>
-                <li><a href="envia-tu-historia.html" class="hover:text-red-400 text-lg">Envía Tu Pesadilla</a></li>
-                <li><a href="contacto.html" class="hover:text-red-400 text-lg">Contacto</a></li>
-            </ul>
+        <nav class="hidden md:flex space-x-6">
+          <ul class="flex space-x-6">
+            <li>
+              <a href="index.html" class="hover:text-red-400 text-lg">Inicio</a>
+            </li>
+            <li>
+              <a
+                href="todas-las-historias.html"
+                class="hover:text-red-400 text-lg nav-active"
+                >Historias</a
+              >
+            </li>
+            <li>
+              <a
+                href="envia-tu-historia.html"
+                class="hover:text-red-400 text-lg"
+                >Envía Tu Pesadilla</a
+              >
+            </li>
+            <li>
+              <a href="contacto.html" class="hover:text-red-400 text-lg"
+                >Contacto</a
+              >
+            </li>
+          </ul>
         </nav>
+      </div>
+
+      <nav id="mobileMenu" class="mobile-nav-menu md:hidden">
+        <ul>
+          <li>
+            <a href="index.html" class="hover:text-red-400 text-lg">Inicio</a>
+          </li>
+          <li>
+            <a
+              href="todas-las-historias.html"
+              class="hover:text-red-400 text-lg nav-active"
+              >Historias</a
+            >
+          </li>
+          <li>
+            <a href="envia-tu-historia.html" class="hover:text-red-400 text-lg"
+              >Envía Tu Pesadilla</a
+            >
+          </li>
+          <li>
+            <a href="contacto.html" class="hover:text-red-400 text-lg"
+              >Contacto</a
+            >
+          </li>
+        </ul>
+      </nav>
     </header>
 
     <main class="container mx-auto my-12 px-4">
-        <h2 class="text-5xl font-creepy text-red-600 mb-10 text-center">Archivo Completo de Horrores</h2>
-        <p class="text-center text-gray-400 mb-8">Sumérgete en cada relato. ¿Hasta dónde te atreverás a llegar?</p>
+      <h2 class="text-5xl font-creepy text-red-600 mb-10 text-center">
+        Archivo Completo de Horrores
+      </h2>
+      <p class="text-center text-gray-400 mb-8">
+        Sumérgete en cada relato. ¿Hasta dónde te atreverás a llegar?
+      </p>
 
-        <div class="flex flex-col md:flex-row justify-between items-center bg-gray-900 p-6 rounded-lg mb-8 shadow-inner border border-red-900">
-            <input type="text" id="searchInput" placeholder="Buscar historia..." class="w-full md:w-1/3 bg-gray-800 text-gray-200 p-3 rounded-md border border-gray-700 focus:outline-none focus:border-red-600 mb-4 md:mb-0">
-            <select id="categoryFilter" class="w-full md:w-1/4 bg-gray-800 text-gray-200 p-3 rounded-md border border-gray-700 focus:outline-none focus:border-red-600 mb-4 md:mb-0">
-                <option value="">Todas las categorías</option>
-                <option value="psicologico">Psicológico</option>
-                <option value="sobrenatural">Sobrenatural</option>
-                <option value="criaturas">Criaturas</option>
-                <option value="leyendas">Leyendas Urbanas</option>
-                <option value="reales">Basado en Hechos Reales</option>
-                <option value="Sin categoría">Sin categoría</option>
-            </select>
-            <select id="sortOrder" class="w-full md:w-1/4 bg-gray-800 text-gray-200 p-3 rounded-md border border-gray-700 focus:outline-none focus:border-red-600">
-                <option value="reciente">Más Recientes</option>
-                <option value="antiguo">Más Antiguos</option>
-            </select>
-        </div>
+      <div
+        class="flex flex-col md:flex-row justify-between items-center bg-gray-900 p-6 rounded-lg mb-8 shadow-inner border border-red-900"
+      >
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Buscar historia..."
+          class="w-full md:w-1/3 bg-gray-800 text-gray-200 p-3 rounded-md border border-gray-700 focus:outline-none focus:border-red-600 mb-4 md:mb-0"
+        />
+        <select
+          id="categoryFilter"
+          class="w-full md:w-1/4 bg-gray-800 text-gray-200 p-3 rounded-md border border-gray-700 focus:outline-none focus:border-red-600 mb-4 md:mb-0"
+        >
+          <option value="">Todas las categorías</option>
+          <option value="psicologico">Psicológico</option>
+          <option value="sobrenatural">Sobrenatural</option>
+          <option value="criaturas">Criaturas</option>
+          <option value="leyendas">Leyendas Urbanas</option>
+          <option value="reales">Basado en Hechos Reales</option>
+          <option value="Sin categoría">Sin categoría</option>
+        </select>
+        <select
+          id="sortOrder"
+          class="w-full md:w-1/4 bg-gray-800 text-gray-200 p-3 rounded-md border border-gray-700 focus:outline-none focus:border-red-600"
+        >
+          <option value="reciente">Más Recientes</option>
+          <option value="antiguo">Más Antiguos</option>
+        </select>
+      </div>
 
-        <div id="todas-las-historias-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">    
-            </div>
+      <div
+        id="todas-las-historias-container"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+      ></div>
 
-        <div class="flex justify-center items-center space-x-4 mt-12 text-gray-400">
-            <button id="prevPageBtn" class="bg-gray-800 hover:bg-red-700 text-white py-2 px-4 rounded-md transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">&laquo; Anterior</button>
-            <span id="pageInfo" class="text-lg">Página 1 de 1</span>
-            <button id="nextPageBtn" class="bg-gray-800 hover:bg-red-700 text-white py-2 px-4 rounded-md transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">Siguiente &raquo;</button>
-        </div>
+      <div
+        class="flex justify-center items-center space-x-4 mt-12 text-gray-400"
+      >
+        <button
+          id="prevPageBtn"
+          class="bg-gray-800 hover:bg-red-700 text-white py-2 px-4 rounded-md transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          &laquo; Anterior
+        </button>
+        <span id="pageInfo" class="text-lg">Página 1 de 1</span>
+        <button
+          id="nextPageBtn"
+          class="bg-gray-800 hover:bg-red-700 text-white py-2 px-4 rounded-md transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Siguiente &raquo;
+        </button>
+      </div>
     </main>
 
     <footer class="bg-gray-900 text-gray-500 p-6 text-center mt-12">
-        <p>&copy; 2025 Terror Nocturno. Todos los derechos reservados.</p>
-        <div class="flex justify-center space-x-4 mt-4">
-            <a href="#" class="hover:text-red-600">Facebook</a>
-            <a href="#" class="hover:text-red-600">Twitter</a>
-            <a href="#" class="hover:text-red-600">Instagram</a>
-        </div>
+      <p>&copy; 2025 Terror Nocturno. Todos los derechos reservados.</p>
+      <div class="flex justify-center space-x-4 mt-4">
+        <a href="#" class="hover:text-red-600">Facebook</a>
+        <a href="#" class="hover:text-red-600">Twitter</a>
+        <a href="#" class="hover:text-red-600">Instagram</a>
+      </div>
     </footer>
 
     <div id="fullStoryModal" class="modal-overlay">
-        <div class="modal-content">
-            <button id="closeModalBtn" class="modal-close-btn">&times;</button>
-            <h3 id="modalStoryTitle" class="text-4xl font-creepy text-red-600 mb-4 text-center"></h3>
-            <p id="modalStoryAuthor" class="text-sm text-gray-400 mb-4 text-center"></p>
-            <div id="modalStoryText" class="text-gray-300 leading-relaxed text-lg whitespace-pre-wrap"></div> 
-        </div>
+      <div class="modal-content">
+        <button id="closeModalBtn" class="modal-close-btn">&times;</button>
+        <h3
+          id="modalStoryTitle"
+          class="text-4xl font-creepy text-red-600 mb-4 text-center"
+        ></h3>
+        <p
+          id="modalStoryAuthor"
+          class="text-sm text-gray-400 mb-4 text-center"
+        ></p>
+        <div
+          id="modalStoryText"
+          class="text-gray-300 leading-relaxed text-lg whitespace-pre-wrap"
+        ></div>
+      </div>
     </div>
     <script>
-    // --- Código del menú de hamburguesa ---
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
+      // --- Código del menú de hamburguesa ---
+      const hamburgerBtn = document.getElementById("hamburgerBtn");
+      const mobileMenu = document.getElementById("mobileMenu");
 
-    if (hamburgerBtn && mobileMenu) {
-        hamburgerBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('active');
+      if (hamburgerBtn && mobileMenu) {
+        hamburgerBtn.addEventListener("click", () => {
+          mobileMenu.classList.toggle("active");
         });
 
-        mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.remove('active');
-            });
+        mobileMenu.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", () => {
+            mobileMenu.classList.remove("active");
+          });
         });
 
         // Opcional: cerrar el menú móvil si se hace clic fuera
-        document.addEventListener('click', (event) => {
-            if (!mobileMenu.contains(event.target) && !hamburgerBtn.contains(event.target) && mobileMenu.classList.contains('active')) {
-                mobileMenu.classList.remove('active');
-            }
+        document.addEventListener("click", (event) => {
+          if (
+            !mobileMenu.contains(event.target) &&
+            !hamburgerBtn.contains(event.target) &&
+            mobileMenu.classList.contains("active")
+          ) {
+            mobileMenu.classList.remove("active");
+          }
         });
-    }
+      }
 
-    // --- Código de carga de historias y paginación ---
-    const historiasContainer = document.getElementById('todas-las-historias-container');
-    const prevPageBtn = document.getElementById('prevPageBtn');
-    const nextPageBtn = document.getElementById('nextPageBtn');
-    const pageInfoSpan = document.getElementById('pageInfo');
-    const searchInput = document.getElementById('searchInput');
-    const categoryFilter = document.getElementById('categoryFilter');
-    const sortOrder = document.getElementById('sortOrder');
+      // --- Código de carga de historias y paginación ---
+      const historiasContainer = document.getElementById(
+        "todas-las-historias-container"
+      );
+      const prevPageBtn = document.getElementById("prevPageBtn");
+      const nextPageBtn = document.getElementById("nextPageBtn");
+      const pageInfoSpan = document.getElementById("pageInfo");
+      const searchInput = document.getElementById("searchInput");
+      const categoryFilter = document.getElementById("categoryFilter");
+      const sortOrder = document.getElementById("sortOrder");
 
-    let currentPage = 1;
-    const storiesPerPage = 9; // Cantidad de historias por página
+      let currentPage = 1;
+      const storiesPerPage = 9; // Cantidad de historias por página
 
-    // Función auxiliar para obtener el icono de la categoría (con ml-1 para espacio)
-    function getCategoryIcon(category) {
+      // Función auxiliar para obtener el icono de la categoría (con ml-1 para espacio)
+      function getCategoryIcon(category) {
         switch (category.toLowerCase()) {
-            case 'psicologico': return '<i class="fas fa-brain text-purple-400 ml-1"></i>';
-            case 'sobrenatural': return '<i class="fas fa-ghost text-blue-400 ml-1"></i>';
-            case 'criaturas': return '<i class="fas fa-spider text-green-400 ml-1"></i>';
-            case 'leyendas': return '<i class="fas fa-book-open text-orange-400 ml-1"></i>';
-            case 'reales': return '<i class="fas fa-gavel text-gray-400 ml-1"></i>';
-            default: return '<i class="fas fa-tag text-gray-500 ml-1"></i>'; // Icono por defecto
+          case "psicologico":
+            return '<i class="fas fa-brain text-purple-400 ml-1"></i>';
+          case "sobrenatural":
+            return '<i class="fas fa-ghost text-blue-400 ml-1"></i>';
+          case "criaturas":
+            return '<i class="fas fa-spider text-green-400 ml-1"></i>';
+          case "leyendas":
+            return '<i class="fas fa-book-open text-orange-400 ml-1"></i>';
+          case "reales":
+            return '<i class="fas fa-gavel text-gray-400 ml-1"></i>';
+          default:
+            return '<i class="fas fa-tag text-gray-500 ml-1"></i>'; // Icono por defecto
         }
-    }
+      }
 
-    // Función para verificar si la historia es "nueva" (últimas 48 horas)
-    function isNewStory(storyDate) {
+      // Función para verificar si la historia es "nueva" (últimas 48 horas)
+      function isNewStory(storyDate) {
         const now = new Date();
         const storyDateTime = new Date(storyDate);
         const diffTime = Math.abs(now - storyDateTime);
         const diffHours = Math.ceil(diffTime / (1000 * 60 * 60));
         return diffHours <= 48; // Considera "nueva" si fue publicada en las últimas 48 horas
-    }
+      }
 
-
-    async function fetchHistorias() {
-        historiasContainer.innerHTML = '<p class="text-center text-gray-400 col-span-full">Cargando historias...</p>';
+      async function fetchHistorias() {
+        historiasContainer.innerHTML =
+          '<p class="text-center text-gray-400 col-span-full">Cargando historias...</p>';
         prevPageBtn.disabled = true;
         nextPageBtn.disabled = true;
 
@@ -273,132 +384,149 @@
 
         let url = `https://terror-nocturno.onrender.com/api/historias?page=${currentPage}&limit=${storiesPerPage}`;
         if (searchTerm) {
-            url += `&search=${encodeURIComponent(searchTerm)}`;
+          url += `&search=${encodeURIComponent(searchTerm)}`;
         }
         if (selectedCategory) {
-            url += `&category=${encodeURIComponent(selectedCategory)}`;
+          url += `&category=${encodeURIComponent(selectedCategory)}`;
         }
         if (selectedSortOrder) {
-            url += `&sortBy=${encodeURIComponent(selectedSortOrder)}`;
+          url += `&sortBy=${encodeURIComponent(selectedSortOrder)}`;
         }
 
         try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-            const historias = data.historias;
-            const totalHistorias = data.totalHistorias;
-            const totalPaginas = data.totalPaginas;
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const data = await response.json();
+          const historias = data.historias;
+          const totalHistorias = data.totalHistorias;
+          const totalPaginas = data.totalPaginas;
 
-            historiasContainer.innerHTML = ''; // Limpiar contenido previo
+          historiasContainer.innerHTML = ""; // Limpiar contenido previo
 
-            if (historias.length === 0) {
-                historiasContainer.innerHTML = '<p class="text-center text-gray-400 col-span-full">No se encontraron historias con los criterios seleccionados.</p>';
-            } else {
-                historias.forEach(historia => {
-                    const iconHtml = getCategoryIcon(historia.categoria || 'Sin categoría');
-                    const newIndicator = isNewStory(historia.fecha) ? '<span class="bg-red-700 text-white text-xs font-bold px-2 py-1 rounded-full absolute top-2 right-2 transform rotate-6">¡Nuevo!</span>' : '';
+          if (historias.length === 0) {
+            historiasContainer.innerHTML =
+              '<p class="text-center text-gray-400 col-span-full">No se encontraron historias con los criterios seleccionados.</p>';
+          } else {
+            historias.forEach((historia) => {
+              const iconHtml = getCategoryIcon(
+                historia.categoria || "Sin categoría"
+              );
+              const newIndicator = isNewStory(historia.fecha)
+                ? '<span class="bg-red-700 text-white text-xs font-bold px-2 py-1 rounded-full absolute top-2 right-2 transform rotate-6">¡Nuevo!</span>'
+                : "";
 
-                    const historiaCard = `
-                       <div class="bg-gray-900 p-6 rounded-lg shadow-xl border border-red-900 transform hover:scale-102 transition duration-300 story-card flex flex-col justify-between relative" data-story-id="${historia._id}">
-                            ${newIndicator} <h4 class="text-3xl font-creepy text-red-500 mb-2">${historia.titulo}</h4>
+              const historiaCard = `
+                       <div class="bg-gray-900 p-6 rounded-lg shadow-xl border border-red-900 transform hover:scale-102 transition duration-300 story-card flex flex-col justify-between relative" data-story-id="${
+                         historia._id
+                       }">
+                            ${newIndicator} <h4 class="text-3xl font-creepy text-red-500 mb-2">${
+                historia.titulo
+              }</h4>
                             
-                            <div class="text-sm text-gray-400 mb-1">Por: ${historia.nombre || 'Anónimo'}</div>
+                            <div class="text-sm text-gray-400 mb-1">Por: ${
+                              historia.nombre || "Anónimo"
+                            }</div>
                             <div class="text-sm text-gray-400 mb-3 flex items-center">
-                                Categoría: ${historia.categoria || 'Sin categoría'}${iconHtml}
+                                Categoría: ${
+                                  historia.categoria || "Sin categoría"
+                                }${iconHtml}
                             </div>
                             
-                            <p class="text-gray-300 mb-4 line-clamp-4">${historia.historia}</p>
-                            <button class="block text-left text-red-600 hover:text-red-400 font-bold leer-mas-btn" data-story-id="${historia._id}">Leer más &raquo;</button>
+                            <p class="text-gray-300 mb-4 line-clamp-4">${
+                              historia.historia
+                            }</p>
+                            <button class="block text-left text-red-600 hover:text-red-400 font-bold leer-mas-btn" data-story-id="${
+                              historia._id
+                            }">Leer más &raquo;</button>
                         </div>
                     `;
-                    historiasContainer.innerHTML += historiaCard;
-                });
+              historiasContainer.innerHTML += historiaCard;
+            });
 
-                // Añadir event listeners a los botones "Leer más"
-                document.querySelectorAll('.leer-mas-btn').forEach(button => {
-                    button.addEventListener('click', (event) => {
-                        const storyId = event.target.dataset.storyId;
-                        const selectedStory = historias.find(h => h._id === storyId);
-                        if (selectedStory) {
-                            openModal(selectedStory);
-                        }
-                    });
-                });
-            }
+            // Añadir event listeners a los botones "Leer más"
+            document.querySelectorAll(".leer-mas-btn").forEach((button) => {
+              button.addEventListener("click", (event) => {
+                const storyId = event.target.dataset.storyId;
+                const selectedStory = historias.find((h) => h._id === storyId);
+                if (selectedStory) {
+                  openModal(selectedStory);
+                }
+              });
+            });
+          }
 
-            pageInfoSpan.textContent = `Página ${currentPage} de ${totalPaginas}`;
-            prevPageBtn.disabled = currentPage === 1;
-            nextPageBtn.disabled = currentPage === totalPaginas;
-
+          pageInfoSpan.textContent = `Página ${currentPage} de ${totalPaginas}`;
+          prevPageBtn.disabled = currentPage === 1;
+          nextPageBtn.disabled = currentPage === totalPaginas;
         } catch (error) {
-            console.error('Error al cargar las historias:', error);
-            historiasContainer.innerHTML = '<p class="text-center text-red-500 col-span-full">No se pudieron cargar las historias. Inténtalo de nuevo más tarde.</p>';
-            pageInfoSpan.textContent = `Error al cargar`;
-            prevPageBtn.disabled = true;
-            nextPageBtn.disabled = true;
+          console.error("Error al cargar las historias:", error);
+          historiasContainer.innerHTML =
+            '<p class="text-center text-red-500 col-span-full">No se pudieron cargar las historias. Inténtalo de nuevo más tarde.</p>';
+          pageInfoSpan.textContent = `Error al cargar`;
+          prevPageBtn.disabled = true;
+          nextPageBtn.disabled = true;
         }
-    }
+      }
 
-    // Event Listeners para paginación, búsqueda, filtrado y ordenación
-    prevPageBtn.addEventListener('click', () => {
+      // Event Listeners para paginación, búsqueda, filtrado y ordenación
+      prevPageBtn.addEventListener("click", () => {
         if (currentPage > 1) {
-            currentPage--;
-            fetchHistorias();
+          currentPage--;
+          fetchHistorias();
         }
-    });
+      });
 
-    nextPageBtn.addEventListener('click', () => {
+      nextPageBtn.addEventListener("click", () => {
         currentPage++;
         fetchHistorias();
-    });
+      });
 
-    searchInput.addEventListener('input', () => {
+      searchInput.addEventListener("input", () => {
         currentPage = 1; // Reiniciar paginación al buscar
         fetchHistorias();
-    });
+      });
 
-    categoryFilter.addEventListener('change', () => {
+      categoryFilter.addEventListener("change", () => {
         currentPage = 1; // Reiniciar paginación al filtrar
         fetchHistorias();
-    });
+      });
 
-    sortOrder.addEventListener('change', () => {
+      sortOrder.addEventListener("change", () => {
         currentPage = 1; // Reiniciar paginación al ordenar
         fetchHistorias();
-    });
+      });
 
-    // Cargar historias al cargar la página por primera vez
-    document.addEventListener('DOMContentLoaded', fetchHistorias);
+      // Cargar historias al cargar la página por primera vez
+      document.addEventListener("DOMContentLoaded", fetchHistorias);
 
-    // --- Código del Modal ---
-    const fullStoryModal = document.getElementById('fullStoryModal');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    const modalStoryTitle = document.getElementById('modalStoryTitle');
-    const modalStoryAuthor = document.getElementById('modalStoryAuthor');
-    const modalStoryText = document.getElementById('modalStoryText');
+      // --- Código del Modal ---
+      const fullStoryModal = document.getElementById("fullStoryModal");
+      const closeModalBtn = document.getElementById("closeModalBtn");
+      const modalStoryTitle = document.getElementById("modalStoryTitle");
+      const modalStoryAuthor = document.getElementById("modalStoryAuthor");
+      const modalStoryText = document.getElementById("modalStoryText");
 
-    function openModal(story) {
+      function openModal(story) {
         modalStoryTitle.textContent = story.titulo;
-        modalStoryAuthor.textContent = `Por: ${story.nombre || 'Anónimo'}`;
+        modalStoryAuthor.textContent = `Por: ${story.nombre || "Anónimo"}`;
         modalStoryText.textContent = story.historia; // Usar textContent para preservar saltos de línea
-        fullStoryModal.classList.add('active');
-    }
+        fullStoryModal.classList.add("active");
+      }
 
-    function closeModal() {
-        fullStoryModal.classList.remove('active');
-    }
+      function closeModal() {
+        fullStoryModal.classList.remove("active");
+      }
 
-    closeModalBtn.addEventListener('click', closeModal);
+      closeModalBtn.addEventListener("click", closeModal);
 
-    // Cerrar modal al hacer clic fuera
-    fullStoryModal.addEventListener('click', (event) => {
+      // Cerrar modal al hacer clic fuera
+      fullStoryModal.addEventListener("click", (event) => {
         if (event.target === fullStoryModal) {
-            closeModal();
+          closeModal();
         }
-    });
-</script>
-</body>
+      });
+    </script>
+  </body>
 </html>
