@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración - Terror Nocturno</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a202c; /* bg-gray-900 */
+            color: #e2e8f0; /* text-gray-200 */
+        }
+        .font-creepy {
+            font-family: 'Creepster', cursive;
+        }
+        .container {
+            max-width: 960px;
+        }
+        .card {
+            background-color: #2d3748; /* bg-gray-800 */
+            border-color: #9b2c2c; /* border-red-900 */
+        }
+        .btn-approve {
+            background-color: #38a169; /* green-600 */
+            color: white;
+        }
+        .btn-approve:hover {
+            background-color: #2f855a; /* green-700 */
+        }
+        .btn-delete {
+            background-color: #e53e3e; /* red-600 */
+            color: white;
+        }
+        .btn-delete:hover {
+            background-color: #c53030; /* red-700 */
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-gray-800 py-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <h1 class="text-4xl font-creepy text-red-600">Terror Nocturno</h1>
+            <nav>
+                <a href="index.html" class="text-gray-300 hover:text-red-500 mx-4">Inicio</a>
+                <a href="todas-las-historias.html" class="text-gray-300 hover:text-red-500 mx-4">Historias</a>
+                <a href="envia-tu-historia.html" class="text-gray-300 hover:text-red-500 mx-4">Envía Tu Historia</a>
+                <a href="contacto.html" class="text-gray-300 hover:text-red-500 mx-4">Contacto</a>
+                <a href="admin.html" class="text-red-600 font-bold mx-4">Administrar</a>
+                <a href="#" id="logoutBtn" class="text-gray-300 hover:text-red-500 mx-4 hidden">Cerrar Sesión (<span id="adminUsernameDisplay"></span>)</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 mt-12">
+        <h2 class="text-5xl font-creepy text-red-600 text-center mb-8">Administración de Historias</h2>
+
+        <div id="historias-pendientes-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <p class="text-center text-gray-400 col-span-full">Cargando historias pendientes...</p>
+        </div>
+    </main>
+
+    <footer class="bg-gray-900 text-gray-500 p-6 text-center mt-12">
+        <p>&copy; 2025 Terror Nocturno. Todos los derechos reservados.</p>
+        <div class="flex justify-center space-x-4 mt-4">
+            <a href="#" class="hover:text-red-600">Facebook</a>
+            <a href="#" class="hover:text-red-600">Twitter</a>
+            <a href="#" class="hover:text-red-600">Instagram</a>
+        </div>
+    </footer>
+    <div id="editStoryModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4 hidden">
+    <div class="bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-lg md:max-w-xl relative border border-red-900 max-h-[90vh] overflow-y-auto">
+        <button id="closeEditModalBtn" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-3xl font-bold">&times;</button>
+        <h3 class="text-4xl font-creepy text-red-600 mb-6 text-center">Editar Historia</h3>
+        <form id="editStoryForm" class="space-y-4">
+            <input type="hidden" id="editStoryId">
+            <div>
+                <label for="editTitulo" class="block text-gray-300 text-sm font-bold mb-2">Título:</label>
+                <input type="text" id="editTitulo" class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline bg-gray-700 border-gray-600 text-gray-200" required>
+            </div>
+            <div>
+                <label for="editNombre" class="block text-gray-300 text-sm font-bold mb-2">Autor (opcional):</label>
+                <input type="text" id="editNombre" class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline bg-gray-700 border-gray-600 text-gray-200">
+            </div>
+            <div>
+                <label for="editEmail" class="block text-gray-300 text-sm font-bold mb-2">Email:</label>
+                <input type="email" id="editEmail" class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline bg-gray-700 border-gray-600 text-gray-200" required>
+            </div>
+            <div>
+                <label for="editCategoria" class="block text-gray-300 text-sm font-bold mb-2">Categoría:</label>
+                <select id="editCategoria" class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline bg-gray-700 border-gray-600 text-gray-200">
+                    <option value="psicologico">Psicológico</option>
+                    <option value="sobrenatural">Sobrenatural</option>
+                    <option value="criaturas">Criaturas</option>
+                    <option value="leyendas">Leyendas Urbanas</option>
+                    <option value="reales">Basado en Hechos Reales</option>
+                    <option value="sin categoría">Sin categoría</option>
+                </select>
+            </div>
+            <div>
+                <label for="editHistoria" class="block text-gray-300 text-sm font-bold mb-2">Historia:</label>
+                <textarea id="editHistoria" rows="8" class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline bg-gray-700 border-gray-600 text-gray-200 min-h-32 max-h-64 resize-y" required></textarea>
+                </div>
+            <button type="submit" class="bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-4 rounded w-full mt-4">Guardar Cambios</button>
+            </form>
+    </div>
+</div>
+    <script>
+    const historiasPendientesContainer = document.getElementById('historias-pendientes-container');
+
+    // Referencias a elementos del modal de edición
+    const editStoryModal = document.getElementById('editStoryModal');
+    const closeEditModalBtn = document.getElementById('closeEditModalBtn');
+    const editStoryForm = document.getElementById('editStoryForm');
+    const editStoryId = document.getElementById('editStoryId');
+    const editTitulo = document.getElementById('editTitulo');
+    const editNombre = document.getElementById('editNombre');
+    const editEmail = document.getElementById('editEmail');
+    const editCategoria = document.getElementById('editCategoria');
+    const editHistoria = document.getElementById('editHistoria');
+
+    // Referencias para el logout
+    const logoutBtn = document.getElementById('logoutBtn');
+    const adminUsernameDisplay = document.getElementById('adminUsernameDisplay');
+
+    // --- NUEVO: Función para verificar autenticación y obtener token ---
+    function getAuthHeaders() {
+        const token = localStorage.getItem('adminToken');
+        if (!token) {
+            // Si no hay token, redirige al login
+            alert('No estás autenticado. Por favor, inicia sesión.');
+            window.location.href = 'login.html';
+            return null;
+        }
+        return {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        };
+    }
+
+    // --- NUEVO: Verificar autenticación al cargar la página ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const token = localStorage.getItem('adminToken');
+        const username = localStorage.getItem('adminUsername');
+
+        if (!token || !username) {
+            // Si no hay token o username, redirige al login
+            alert('No estás autenticado. Por favor, inicia sesión.');
+            window.location.href = 'login.html';
+        } else {
+            // Muestra el botón de logout y el nombre de usuario
+            logoutBtn.classList.remove('hidden');
+            adminUsernameDisplay.textContent = username;
+            loadHistoriasPendientes(); // Carga las historias solo si está autenticado
+        }
+    });
+
+    // --- NUEVO: Manejador para el botón de logout ---
+    logoutBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminUsername');
+            window.location.href = 'login.html'; // Redirige al login
+        }
+    });
+
+
+    // Función auxiliar para obtener el icono de la categoría
+    function getCategoryIcon(category) {
+        switch (category.toLowerCase()) {
+            case 'psicologico': return '<i class="fas fa-brain text-purple-400 ml-1"></i>';
+            case 'sobrenatural': return '<i class="fas fa-ghost text-blue-400 ml-1"></i>';
+            case 'criaturas': return '<i class="fas fa-spider text-green-400 ml-1"></i>';
+            case 'leyendas': return '<i class="fas fa-book-open text-orange-400 ml-1"></i>';
+            case 'reales': return '<i class="fas fa-gavel text-gray-400 ml-1"></i>';
+            default: return '<i class="fas fa-tag text-gray-500 ml-1"></i>';
+        }
+    }
+
+    async function loadHistoriasPendientes() {
+        historiasPendientesContainer.innerHTML = '<p class="text-center text-gray-400 col-span-full">Cargando historias pendientes...</p>';
+        
+        const headers = getAuthHeaders(); // <--- OBTIENE LOS HEADERS CON EL TOKEN
+        if (!headers) return; // Si no hay token, la función ya redirigió
+
+        try {
+            const response = await fetch('http://localhost:5000/api/admin/historias-pendientes', {
+                headers: headers // <--- AÑADE LOS HEADERS A LA SOLICITUD
+            });
+            if (!response.ok) {
+                // Si la respuesta no es OK y es 401/403, el token podría haber expirado
+                if (response.status === 401 || response.status === 403) {
+                    alert('Sesión expirada o no autorizada. Por favor, inicia sesión de nuevo.');
+                    localStorage.removeItem('adminToken');
+                    localStorage.removeItem('adminUsername');
+                    window.location.href = 'login.html';
+                    return;
+                }
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const historias = await response.json();
+
+            historiasPendientesContainer.innerHTML = ''; // Limpiar contenido previo
+
+            if (historias.length === 0) {
+                historiasPendientesContainer.innerHTML = '<p class="text-center text-gray-400 col-span-full">No hay historias pendientes de aprobación.</p>';
+            } else {
+                historias.forEach(historia => {
+                    const iconHtml = getCategoryIcon(historia.categoria || 'Sin categoría');
+                    const card = `
+                        <div class="card p-6 rounded-lg shadow-xl border border-red-900 flex flex-col justify-between" data-story-id="${historia._id}">
+                            <h4 class="text-3xl font-creepy text-red-500 mb-2">${historia.titulo}</h4>
+                            <div class="text-sm text-gray-400 mb-1">Por: ${historia.nombre || 'Anónimo'}</div>
+                            <div class="text-sm text-gray-400 mb-3 flex items-center">
+                                Categoría: ${historia.categoria || 'Sin categoría'}${iconHtml}
+                            </div>
+                            <p class="text-gray-300 mb-4 line-clamp-4">${historia.historia}</p>
+                            <div class="flex space-x-2 mt-auto">
+                                <button class="btn-approve px-3 py-2 rounded-md font-bold flex-1" data-id="${historia._id}">Aprobar</button>
+                                <button class="btn-edit px-3 py-2 rounded-md font-bold flex-1 bg-blue-600 hover:bg-blue-700 text-white" data-id="${historia._id}"
+                                    data-nombre="${encodeURIComponent(historia.nombre || '')}"
+                                    data-email="${encodeURIComponent(historia.email)}"
+                                    data-titulo="${encodeURIComponent(historia.titulo)}"
+                                    data-historia="${encodeURIComponent(historia.historia)}"
+                                    data-categoria="${encodeURIComponent(historia.categoria || 'Sin categoría')}">Editar</button>
+                                <button class="btn-delete px-3 py-2 rounded-md font-bold flex-1" data-id="${historia._id}">Eliminar</button>
+                            </div>
+                        </div>
+                    `;
+                    historiasPendientesContainer.innerHTML += card;
+                });
+
+                // --- Event Listeners para los botones de las tarjetas ---
+
+                // Botones Aprobar
+                document.querySelectorAll('.btn-approve').forEach(button => {
+                    button.addEventListener('click', async (event) => {
+                        const storyId = event.target.dataset.id;
+                        if (confirm('¿Estás seguro de que quieres APROBAR esta historia?')) {
+                            const headers = getAuthHeaders(); // <--- OBTIENE LOS HEADERS CON EL TOKEN
+                            if (!headers) return;
+
+                            try {
+                                const response = await fetch(`http://localhost:5000/api/admin/historias/${storyId}/aprobar`, {
+                                    method: 'PUT',
+                                    headers: headers // <--- AÑADE LOS HEADERS
+                                });
+                                if (!response.ok) {
+                                    if (response.status === 401 || response.status === 403) {
+                                        alert('Sesión expirada o no autorizada. Por favor, inicia sesión de nuevo.');
+                                        localStorage.removeItem('adminToken');
+                                        localStorage.removeItem('adminUsername');
+                                        window.location.href = 'login.html';
+                                        return;
+                                    }
+                                    const errorData = await response.json();
+                                    throw new Error(errorData.message || 'Error desconocido.');
+                                }
+                                alert('Historia aprobada con éxito.');
+                                loadHistoriasPendientes(); // Recargar la lista
+                            } catch (error) {
+                                console.error('Error al aprobar:', error);
+                                alert('Error al aprobar la historia: ' + error.message);
+                            }
+                        }
+                    });
+                });
+
+                // Botones Eliminar
+                document.querySelectorAll('.btn-delete').forEach(button => {
+                    button.addEventListener('click', async (event) => {
+                        const storyId = event.target.dataset.id;
+                        if (confirm('¿Estás seguro de que quieres ELIMINAR esta historia? Esta acción es irreversible.')) {
+                            const headers = getAuthHeaders(); // <--- OBTIENE LOS HEADERS CON EL TOKEN
+                            if (!headers) return;
+
+                            try {
+                                const response = await fetch(`http://localhost:5000/api/admin/historias/${storyId}`, {
+                                    method: 'DELETE',
+                                    headers: headers // <--- AÑADE LOS HEADERS
+                                });
+                                if (!response.ok) {
+                                    if (response.status === 401 || response.status === 403) {
+                                        alert('Sesión expirada o no autorizada. Por favor, inicia sesión de nuevo.');
+                                        localStorage.removeItem('adminToken');
+                                        localStorage.removeItem('adminUsername');
+                                        window.location.href = 'login.html';
+                                        return;
+                                    }
+                                    const errorData = await response.json();
+                                    throw new Error(errorData.message || 'Error desconocido.');
+                                }
+                                alert('Historia eliminada con éxito.');
+                                loadHistoriasPendientes(); // Recargar la lista
+                            } catch (error) {
+                                console.error('Error al eliminar:', error);
+                                alert('Error al eliminar la historia: ' + error.message);
+                            }
+                        }
+                    });
+                });
+
+                // Botones EDITAR
+                document.querySelectorAll('.btn-edit').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        const storyId = event.target.dataset.id;
+                        const nombre = decodeURIComponent(event.target.dataset.nombre);
+                        const email = decodeURIComponent(event.target.dataset.email);
+                        const titulo = decodeURIComponent(event.target.dataset.titulo);
+                        const historia = decodeURIComponent(event.target.dataset.historia);
+                        const categoria = decodeURIComponent(event.target.dataset.categoria).toLowerCase(); 
+
+                        editStoryId.value = storyId;
+                        editTitulo.value = titulo;
+                        editNombre.value = nombre;
+                        editEmail.value = email;
+                        editHistoria.value = historia;
+                        editCategoria.value = categoria; 
+
+                        editStoryModal.classList.remove('hidden');
+                        editTitulo.focus(); 
+                    });
+                });
+            }
+
+        } catch (error) {
+            console.error('Error al cargar las historias pendientes:', error);
+            historiasPendientesContainer.innerHTML = '<p class="text-red-500 text-center col-span-full">No se pudieron cargar las historias pendientes. Asegúrate de que el servidor esté corriendo y hayas iniciado sesión.</p>';
+        }
+    }
+
+    // Lógica del Modal de Edición (sin cambios significativos aquí)
+    closeEditModalBtn.addEventListener('click', () => {
+        editStoryModal.classList.add('hidden');
+    });
+
+    editStoryModal.addEventListener('click', (event) => {
+        if (event.target === editStoryModal) {
+            editStoryModal.classList.add('hidden');
+        }
+    });
+
+    editStoryForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const storyId = editStoryId.value;
+        const updatedData = {
+            titulo: editTitulo.value,
+            nombre: editNombre.value,
+            email: editEmail.value,
+            categoria: editCategoria.value,
+            historia: editHistoria.value
+        };
+
+        const headers = getAuthHeaders(); // <--- OBTIENE LOS HEADERS CON EL TOKEN
+        if (!headers) return;
+
+        try {
+            const response = await fetch(`http://localhost:5000/api/admin/historias/${storyId}`, {
+                method: 'PUT',
+                headers: headers, // <--- AÑADE LOS HEADERS
+                body: JSON.stringify(updatedData)
+            });
+
+            if (!response.ok) {
+                 if (response.status === 401 || response.status === 403) {
+                    alert('Sesión expirada o no autorizada. Por favor, inicia sesión de nuevo.');
+                    localStorage.removeItem('adminToken');
+                    localStorage.removeItem('adminUsername');
+                    window.location.href = 'login.html';
+                    return;
+                }
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Error desconocido.');
+            }
+            alert('Historia actualizada con éxito.');
+            editStoryModal.classList.add('hidden');
+            loadHistoriasPendientes();
+        } catch (error) {
+            console.error('Error al actualizar:', error);
+            alert('Error al actualizar la historia: ' + error.message);
+        }
+    });
+
+    // Eliminamos el `DOMContentLoaded` aquí, ya que ahora lo manejamos al inicio del script para la autenticación.
+</script>
+</body>
+</html>

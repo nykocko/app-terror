@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terror Nocturno - Relatos que Te Quitarán el Sueño</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+        .font-creepy {
+            font-family: 'Creepster', cursive;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        /* Nueva animación de pulsación más lenta */
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; } /* Un poco más tenue en el punto medio */
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; /* Más lento (3s) */
+        }
+        /* Estilo para el enlace activo */
+        .nav-active {
+            color: #CC0000; /* Rojo principal de los títulos */
+            font-weight: bold;
+            cursor: default; /* Indica que no es clicable */
+            pointer-events: none; /* Deshabilita clics en el enlace */
+        }
+
+        /* Estilos específicos para el menú móvil */
+        .mobile-nav-menu {
+            /* Por defecto, está oculto con altura 0 y opacidad 0 */
+            max-height: 0; /* Lo colapsa */
+            opacity: 0;   /* Lo hace invisible */
+            overflow: hidden; /* Oculta el contenido que se desborda */
+            flex-direction: column;
+            width: 100%;
+            background-color: #1a202c;
+            padding: 0 1rem; /* Padding vertical 0 para que la altura inicial sea 0 */
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 20;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            
+            /* --- CAMBIO CRUCIAL: La transición se aplica a estas propiedades --- */
+            transition: max-height 0.7s ease-in-out, opacity 0.7s ease-in-out, padding 0.7s ease-in-out; 
+            /* Agregamos padding a la transición para un efecto más suave al abrir/cerrar */
+        }
+
+        .mobile-nav-menu.active {
+            /* Cuando está activo, se expande y se hace visible */
+            max-height: 500px; /* Un valor lo suficientemente grande para contener todo el menú */
+            opacity: 1;
+            padding: 1rem; /* Restauramos el padding vertical cuando está activo */
+            /* No necesitamos display: flex aquí, ya que el display: none no se usa para ocultarlo inicialmente */
+            /* El flex-direction: column ya está definido en mobile-nav-menu */
+            display: flex; /* Añadido para asegurar que flexbox se active cuando es visible */
+        }
+        
+        .mobile-nav-menu li {
+            margin-bottom: 0.5rem;
+        }
+        .mobile-nav-menu a {
+            display: block;
+            padding: 0.5rem 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="bg-black text-gray-300">
+
+    <header class="bg-gray-900 text-red-600 p-4 shadow-lg relative z-20">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-4xl font-creepy">Terror Nocturno</h1>
+
+            <button id="hamburgerBtn" class="text-red-600 focus:outline-none md:hidden">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+
+            <nav class="hidden md:flex space-x-6">
+                <ul class="flex space-x-6">
+                    <li><a href="index.html" class="hover:text-red-400 text-lg nav-active">Inicio</a></li>
+                    <li><a href="todas-las-historias.html" class="hover:text-red-400 text-lg">Historias</a></li>
+                    <li><a href="envia-tu-historia.html" class="hover:text-red-400 text-lg">Envía Tu Pesadilla</a></li>
+                    <li><a href="contacto.html" class="hover:text-red-400 text-lg">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <nav id="mobileMenu" class="mobile-nav-menu md:hidden">
+            <ul>
+                <li><a href="index.html" class="hover:text-red-400 text-lg nav-active">Inicio</a></li>
+                <li><a href="todas-las-historias.html" class="hover:text-red-400 text-lg">Historias</a></li>
+                <li><a href="envia-tu-historia.html" class="hover:text-red-400 text-lg">Envía Tu Pesadilla</a></li>
+                <li><a href="contacto.html" class="hover:text-red-400 text-lg">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="relative bg-cover bg-center h-96 flex items-center justify-center text-center" style="background-image: url('/images/fondo1.jpg');">
+        <div class="absolute inset-0 bg-black opacity-70"></div>
+        <div class="z-10 p-6">
+            <h2 class="text-6xl font-creepy text-red-600 mb-4 animate-pulse">¿Te atreves a leer?</h2>
+            <p class="text-xl text-gray-200 mb-8">El rincón donde las sombras cobran vida y los miedos se hacen realidad.</p>
+             <p class="text-3xl text-gray-100 font-creepy mb-8 animate-pulse-slow">
+                Tu miedo comienza aquí
+            </p>
+        </div>
+    </section>
+
+    <main id="ultimos-horrores" class="container mx-auto my-12 px-4">
+        <h3 class="text-5xl font-creepy text-red-600 mb-8 text-center">Últimos Horrores Publicados</h3>
+        
+        <div id="historias-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            </div>
+
+        <div class="text-center mt-12">
+            <a href="todas-las-historias.html" class="bg-red-700 hover:bg-red-800 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg transition duration-300 transform hover:scale-105">Ver Todas las Historias &raquo;</a>
+        </div>
+    </main>
+
+    <footer class="bg-gray-900 text-gray-500 p-6 text-center mt-12">
+        <p>&copy; 2025 Terror Nocturno. Todos los derechos reservados.</p>
+        <div class="flex justify-center space-x-4 mt-4">
+            <a href="#" class="hover:text-red-600">Facebook</a>
+            <a href="#" class="hover:text-red-600">Twitter</a>
+            <a href="#" class="hover:text-red-600">Instagram</a>
+        </div>
+    </footer>
+
+    <script>
+        // --- Código del menú de hamburguesa ---
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        if (hamburgerBtn && mobileMenu) {
+            hamburgerBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('active');
+            });
+
+            // Opcional: cerrar el menú móvil si se hace clic fuera
+            document.addEventListener('click', (event) => {
+                if (!mobileMenu.contains(event.target) && !hamburgerBtn.contains(event.target) && mobileMenu.classList.contains('active')) {
+                    mobileMenu.classList.remove('active');
+                }
+            });
+        }
+
+        // --- Cargar últimas historias ---
+        async function cargarUltimasHistorias() {
+            const historiasContainer = document.getElementById('historias-container');
+            try {
+                const response = await fetch('http://localhost:5000/api/historias/ultimas'); // Nueva ruta
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const historias = await response.json();
+
+                historiasContainer.innerHTML = ''; // Limpiar cualquier contenido previo
+                if (historias.length === 0) {
+                    historiasContainer.innerHTML = '<p class="text-center text-gray-400 col-span-full">Aún no hay historias publicadas. ¡Sé el primero en enviar una!</p>';
+                    return;
+                }
+
+                historias.forEach(historia => {
+                    const historiaCard = `
+                        <div class="bg-gray-900 p-6 rounded-lg shadow-xl border border-red-900 transform hover:scale-102 transition duration-300">
+                            <h4 class="text-3xl font-creepy text-red-500 mb-2">${historia.titulo}</h4>
+                            <p class="text-sm text-gray-400 mb-3">Por: ${historia.nombre || 'Anónimo'} <br> Categoría: ${historia.categoria || 'Sin categoría'}</p>
+                            <p class="text-gray-300 mb-4 line-clamp-4">${historia.historia}</p>
+                            <a href="todas-las-historias.html?id=${historia._id}" class="text-red-600 hover:text-red-400 font-bold">Leer más &raquo;</a>
+                        </div>
+                    `;
+                    historiasContainer.innerHTML += historiaCard;
+                });
+            } catch (error) {
+                console.error('Error al cargar las últimas historias:', error);
+                historiasContainer.innerHTML = '<p class="text-center text-red-500 col-span-full">No se pudieron cargar las historias. Inténtalo de nuevo más tarde.</p>';
+            }
+        }
+
+        // Cargar historias al cargar la página
+        document.addEventListener('DOMContentLoaded', cargarUltimasHistorias);
+    </script>
+</body>
+</html>

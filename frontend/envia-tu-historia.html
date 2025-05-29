@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envía Tu Pesadilla - Terror Nocturno</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+        .font-creepy {
+            font-family: 'Creepster', cursive;
+        }
+        /* Estilo para el enlace activo */
+        .nav-active {
+            color: #CC0000; /* Rojo principal de los títulos */
+            font-weight: bold;
+            cursor: default; /* Indica que no es clicable */
+            pointer-events: none; /* Deshabilita clics en el enlace */
+        }
+        /* Estilos específicos para el menú móvil */
+        .mobile-nav-menu {
+            /* Por defecto, está oculto con altura 0 y opacidad 0 */
+            max-height: 0; /* Lo colapsa */
+            opacity: 0;   /* Lo hace invisible */
+            overflow: hidden; /* Oculta el contenido que se desborda */
+            flex-direction: column;
+            width: 100%;
+            background-color: #1a202c;
+            padding: 0 1rem; /* Padding vertical 0 para que la altura inicial sea 0 */
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 20;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            
+            /* --- CAMBIO CRUCIAL: La transición se aplica a estas propiedades --- */
+            transition: max-height 0.7s ease-in-out, opacity 0.7s ease-in-out, padding 0.7s ease-in-out; 
+            /* Agregamos padding a la transición para un efecto más suave al abrir/cerrar */
+        }
+
+        .mobile-nav-menu.active {
+            /* Cuando está activo, se expande y se hace visible */
+            max-height: 500px; /* Un valor lo suficientemente grande para contener todo el menú */
+            opacity: 1;
+            padding: 1rem; /* Restauramos el padding vertical cuando está activo */
+            /* No necesitamos display: flex aquí, ya que el display: none no se usa para ocultarlo inicialmente */
+            /* El flex-direction: column ya está definido en mobile-nav-menu */
+            display: flex; /* Añadido para asegurar que flexbox se active cuando es visible */
+        }
+        
+        .mobile-nav-menu li {
+            margin-bottom: 0.5rem;
+        }
+        .mobile-nav-menu a {
+            display: block;
+            padding: 0.5rem 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="bg-black text-gray-300">
+
+    <header class="bg-gray-900 text-red-600 p-4 shadow-lg relative z-20">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-4xl font-creepy">Terror Nocturno</h1>
+
+            <button id="hamburgerBtn" class="text-red-600 focus:outline-none md:hidden">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+
+            <nav class="hidden md:flex space-x-6">
+                <ul class="flex space-x-6">
+                    <li><a href="index.html" class="hover:text-red-400 text-lg">Inicio</a></li>
+                    <li><a href="todas-las-historias.html" class="hover:text-red-400 text-lg">Historias</a></li>
+                    <li><a href="envia-tu-historia.html" class="hover:text-red-400 text-lg nav-active">Envía Tu Pesadilla</a></li>
+                    <li><a href="contacto.html" class="hover:text-red-400 text-lg">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <nav id="mobileMenu" class="mobile-nav-menu md:hidden">
+            <ul>
+                <li><a href="index.html" class="hover:text-red-400 text-lg">Inicio</a></li>
+                <li><a href="todas-las-historias.html" class="hover:text-red-400 text-lg">Historias</a></li>
+                <li><a href="envia-tu-historia.html" class="hover:text-red-400 text-lg nav-active">Envía Tu Pesadilla</a></li>
+                <li><a href="contacto.html" class="hover:text-red-400 text-lg">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container mx-auto my-12 px-4">
+        <h2 class="text-5xl font-creepy text-red-600 mb-6 text-center">¡Envía Tu Pesadilla!</h2>
+        <p class="text-center text-gray-400 mb-10 max-w-2xl mx-auto">¿Tienes una historia que te carcome por dentro? Compártela con nosotros. Los miedos más profundos merecen ser leídos.</p>
+
+        <div class="bg-gray-900 p-8 rounded-lg shadow-xl border border-red-900 max-w-3xl mx-auto">
+            <p class="text-gray-400 mb-6">**Instrucciones Importantes:**</p>
+            <ul class="list-disc list-inside text-gray-400 mb-8 space-y-2">
+                <li>Aceptamos historias originales de terror, misterio y suspenso.</li>
+                <li>La extensión ideal es entre 500 y 5000 palabras (aproximadamente).</li>
+                <li>Nos reservamos el derecho de editar por claridad y estilo.</li>
+                <li>Al enviar, nos concedes el derecho a publicar tu historia en "Terror Nocturno".</li>
+                <li>Todas las historias serán revisadas antes de su publicación.</li>
+            </ul>
+
+            <form id="storyForm" class="space-y-6">
+                <div>
+                    <label for="titulo" class="block text-red-500 text-lg font-bold mb-2">Título de Tu Historia:</label>
+                    <input type="text" id="titulo" name="titulo" class="w-full bg-gray-800 text-gray-200 p-3 rounded-md border border-gray-700 focus:outline-none focus:border-red-600 placeholder-gray-500" placeholder="Ej: El Silencio del Molino Viejo" required>
+                </div>                
+                <div>
+                    <div class="mb-6">
+                    <label for="categoria" class="block text-gray-300 text-lg font-bold mb-2">Categoría:</label>
+                    <select id="categoria" name="categoria" class="shadow appearance-none border border-gray-700 rounded w-full py-3 px-4 bg-gray-800 text-gray-200 leading-tight focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent">
+                        <option value="Sin categoría">Selecciona una categoría</option>
+                        <option value="psicologico">Psicológico</option>
+                        <option value="sobrenatural">Sobrenatural</option>
+                        <option value="criaturas">Criaturas</option>
+                        <option value="leyendas">Leyendas Urbanas</option>
+                        <option value="reales">Basado en Hechos Reales</option>
+                    </select>
+                </div>
+                    <label for="historia" class="block text-red-500 text-lg font-bold mb-2">Tu Historia (el relato de horror):</label>
+                    <textarea id="historia" name="historia" rows="15" class="w-full bg-gray-800 text-gray-200 p-3 rounded-md border border-gray-700 focus:outline-none focus:border-red-600 placeholder-gray-500" placeholder="Comienza a escribir tu relato aquí..." required></textarea>
+                </div>
+                
+                <div>
+                    <label for="autor" class="block text-red-500 text-lg font-bold mb-2">Tu Nombre o Pseudónimo (opcional):</label>
+                    <input type="text" id="autor" name="nombre" class="w-full bg-gray-800 text-gray-200 p-3 rounded-md border border-gray-700 focus:outline-none focus:border-red-600 placeholder-gray-500" placeholder="Ej: Alma Errante">
+                </div>
+                <div>
+                    <label for="email" class="block text-red-500 text-lg font-bold mb-2">Tu Correo Electrónico (requerido para contacto, no se publicará):</label>
+                    <input type="email" id="email" name="email" class="w-full bg-gray-800 text-gray-200 p-3 rounded-md border border-gray-700 focus:outline-none focus:border-red-600 placeholder-gray-500" placeholder="tu_email@example.com" required>
+                </div>
+                
+                <div id="formMessage" class="text-center text-lg mt-4"></div>
+
+                <div class="text-center">
+                    <button type="submit" class="bg-red-700 hover:bg-red-800 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg transition duration-300 transform hover:scale-105">Enviar Pesadilla</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="bg-gray-900 text-gray-500 p-6 text-center mt-12">
+        <p>&copy; 2025 Terror Nocturno. Todos los derechos reservados.</p>
+        <div class="flex justify-center space-x-4 mt-4">
+            <a href="#" class="hover:text-red-600">Facebook</a>
+            <a href="#" class="hover:text-red-600">Twitter</a>
+            <a href="#" class="hover:text-red-600">Instagram</a>
+        </div>
+    </footer>
+
+    <script>
+        // --- Código del menú de hamburguesa ---
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        if (hamburgerBtn && mobileMenu) {
+            hamburgerBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('active');
+            });
+
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                });
+            });
+
+            // Opcional: cerrar el menú móvil si se hace clic fuera
+            document.addEventListener('click', (event) => {
+                if (!mobileMenu.contains(event.target) && !hamburgerBtn.contains(event.target) && mobileMenu.classList.contains('active')) {
+                    mobileMenu.classList.remove('active');
+                }
+            });
+        }
+
+        // --- Código de envío de formulario ---
+        const storyForm = document.getElementById('storyForm');
+        const formMessage = document.getElementById('formMessage');
+
+        storyForm.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevenir el envío tradicional del formulario
+
+            const formData = new FormData(storyForm);
+            const data = Object.fromEntries(formData.entries());
+
+            // Renombrar 'autor' a 'nombre' para que coincida con el backend
+            data.nombre = data.autor;
+            delete data.autor; // Eliminar el campo 'autor' si no es necesario
+
+            formMessage.textContent = 'Enviando tu historia...';
+            formMessage.className = 'text-center text-yellow-400 text-lg mt-4';
+
+            try {
+                const response = await fetch('http://localhost:5000/api/historias', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || `Error HTTP! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                formMessage.textContent = '¡Historia enviada con éxito! La revisaremos pronto.';
+                formMessage.className = 'text-center text-green-500 text-lg mt-4';
+                storyForm.reset(); // Limpiar el formulario
+
+            } catch (error) {
+                console.error('Error al enviar la historia:', error);
+                formMessage.textContent = `Error al enviar la historia: ${error.message}. Por favor, inténtalo de nuevo.`;
+                formMessage.className = 'text-center text-red-500 text-lg mt-4';
+            }
+        });
+    </script>
+</body>
+</html>

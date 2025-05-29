@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Terror Nocturno Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a202c; /* bg-gray-900 */
+            color: #e2e8f0; /* text-gray-200 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .font-creepy {
+            font-family: 'Creepster', cursive;
+        }
+        .login-card {
+            background-color: #2d3748; /* bg-gray-800 */
+            border-color: #9b2c2c; /* border-red-900 */
+        }
+        .input-field {
+            background-color: #4a5568; /* bg-gray-700 */
+            border-color: #6a7381; /* border-gray-600 */
+            color: #e2e8f0; /* text-gray-200 */
+        }
+        .btn-submit {
+            background-color: #e53e3e; /* red-600 */
+            color: white;
+        }
+        .btn-submit:hover {
+            background-color: #c53030; /* red-700 */
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card p-8 rounded-lg shadow-xl border-2 border-red-900 w-full max-w-sm">
+        <h2 class="text-4xl font-creepy text-red-600 text-center mb-6">Acceso Admin</h2>
+        <form id="loginForm" class="space-y-4">
+            <div>
+                <label for="username" class="block text-gray-300 text-sm font-bold mb-2">Usuario:</label>
+                <input type="text" id="username" class="input-field shadow appearance-none rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" required autocomplete="username">
+            </div>
+            <div>
+                <label for="password" class="block text-gray-300 text-sm font-bold mb-2">Contraseña:</label>
+                <input type="password" id="password" class="input-field shadow appearance-none rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="btn-submit font-bold py-2 px-4 rounded w-full">Iniciar Sesión</button>
+            <p id="message" class="text-center text-red-400 mt-4 hidden"></p>
+        </form>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const messageDisplay = document.getElementById('message');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = usernameInput.value;
+            const password = passwordInput.value;
+
+            try {
+                const response = await fetch('http://localhost:5000/api/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('adminToken', data.token);
+                    localStorage.setItem('adminUsername', data.username);
+                    messageDisplay.textContent = '¡Inicio de sesión exitoso! Redirigiendo...';
+                    messageDisplay.classList.remove('hidden');
+                    messageDisplay.classList.remove('text-red-400');
+                    messageDisplay.classList.add('text-green-400');
+                    setTimeout(() => {
+                        window.location.href = 'admin.html'; // Redirigir a la página de administración
+                    }, 1500);
+                } else {
+                    messageDisplay.textContent = data.message || 'Error en el inicio de sesión.';
+                    messageDisplay.classList.remove('hidden');
+                    messageDisplay.classList.remove('text-green-400');
+                    messageDisplay.classList.add('text-red-400');
+                }
+            } catch (error) {
+                console.error('Error de red al intentar iniciar sesión:', error);
+                messageDisplay.textContent = 'No se pudo conectar al servidor.';
+                messageDisplay.classList.remove('hidden');
+                messageDisplay.classList.remove('text-green-400');
+                messageDisplay.classList.add('text-red-400');
+            }
+        });
+    </script>
+</body>
+</html>
